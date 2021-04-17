@@ -88,6 +88,8 @@ func main() {
 			c.String(http.StatusOK, "hello %s, youre at %s \n", c.Param("name"), c.Path)
 		})
 	}
+	//todo 为啥访问不了涅
+	r.Static("/assets", "/Users/jiawei/testFile")
 
 	r.Run(":9999")
 }
