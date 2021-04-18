@@ -2,6 +2,7 @@ package gee
 
 import (
 	"fmt"
+	"html/template"
 	"log"
 	"net/http"
 	"path"
@@ -24,6 +25,16 @@ type Engine struct {
 	*RouterGroup
 	router *router
 	groups []*RouterGroup
+	htmlTemplates *template.Template
+	funcMap template.FuncMap
+}
+
+func (engine *Engine) SetFuncMap(funcMap template.FuncMap) {
+	engine.funcMap = funcMap
+}
+
+func (engine *Engine) LoadHTMLGlob(pattern string) {
+	engine.htmlTemplates = template.Must(template.New("").Funcs(engine.funcMap).ParseGlob(pattern))
 }
 
 func New() *Engine {
@@ -89,6 +100,7 @@ func (engine *Engine) ServeHTTP(w http.ResponseWriter, req *http.Request)  {
 	}
 	c := NewContext(w, req)
 	c.handlers = middlewares
+	c.engine = engine
 	engine.router.handle(c)
 }
 
