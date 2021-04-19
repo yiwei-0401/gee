@@ -43,15 +43,11 @@ func main() {
 	r.SetFuncMap(template.FuncMap{
 		"FormatAsDate": FormatAsDate,
 	})
-	r.LoadHTMLGlob("templates/*")
+	//r.LoadHTMLGlob("templates/*")
 	r.Static("/assets", "./static")
-	stu1 := &student{Name: "jiawei", Age: 10}
-	stu2 := &student{Name: "jack", Age: 19}
+
 	r.Get("/", func(c *gee.Context) {
-		c.HTML(http.StatusOK, "arr.tmpl", gee.H{
-			"title" : "gee",
-			"stuArr" : [2]*student{stu1, stu2},
-		})
+		c.String(http.StatusOK, "Hello jiawei\n")
 	})
 
 	r.Get("/date", func(c *gee.Context) {
@@ -101,5 +97,9 @@ func main() {
 	//todo 为啥访问不了涅
 	r.Static("/assets", "/Users/jiawei/testFile")
 
+	r.Get("/painc", func(c *gee.Context) {
+		name := []string{"jiawei"}
+		c.String(http.StatusOK, name[200])
+	})
 	r.Run(":9999")
 }
